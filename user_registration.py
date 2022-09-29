@@ -29,10 +29,6 @@ def user_create(user):
     :param user: name of the user
     :return: True if user created successfully
     """
-    if not os.path.isfile('./user.json'):
-        with open('user.json', 'w') as f:
-            json.dump({"dummy@gmail.com": "Dummy@123"}, f, indent=4)
-
     with open('user.json', 'r+') as f:
         info = user_read()
         info.update(user)
@@ -103,7 +99,7 @@ def user_update(name, new_pwd):
             if k == name:
                 validate(new_pwd, password_schema)
                 user_list.update({name: new_pwd})
-                with open('user.json', 'r+') as f:
+                with open('user.json', 'w') as f:
                     json.dump(user_list, f, indent=4)
                 return True
     except Exception as e:
@@ -111,6 +107,9 @@ def user_update(name, new_pwd):
 
 
 if __name__ == '__main__':
+    if not os.path.isfile('./user.json'):
+        with open('user.json', 'w') as f:
+            json.dump({"dummy@gmail.com": "Dummy@123"}, f, indent=4)
     print("Press option 1 for Login")
     print("Press option 2 for Forgot password")
     print("Press option 3 for New Registration")
